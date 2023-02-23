@@ -13,9 +13,17 @@ OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 
 # Constant strings
 NAME		=	fdf
+
+#Para Windows
 MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd
-LIBFLAGS	=	-Llibft -lft
 INCL		=	-Imlx_linux -I$(I_DIR)
+
+#Para Mac
+#MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
+#INCL		=	-I$(I_DIR)
+
+LIBFLAGS	=	-Llibft -lft
+
 LEAKS		=	-g3 -fsanitize=address
 W_FLAGS		=	-Wall -Wextra -Werror
 LIB_N		=	$(L_DIR)$(LIB_A)

@@ -14,19 +14,17 @@
 
 int	select_color(int t, int i)
 {
-	int	d;
+	float	d;
 
-	d = t / 5;
+	d = t / 6;
 	if (i <= d)
-		return (P_RED);
-	else if (i <= 2 * d)
-		return (P_BLUE);
-	else if (i <= 3 * d)
-		return (P_GREEN);
-	else if (i <= 4 * d)
-		return (P_YELLOW);
-	else
 		return (P_WHITE);
+	else if (i <= 2.5 * d)
+		return (P_YELLOW);
+	else if (i <= 5 * d)
+		return (P_RED);
+	else
+		return (P_MAGEN);
 }
 
 t_point	**create_iso(t_pointf **m, t_rect r, int **m2)

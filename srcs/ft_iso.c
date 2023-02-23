@@ -51,7 +51,7 @@ int	ft_adjust_coord(t_pointf **m, t_pointf lx, t_pointf ly, t_rect r)
 }
 
 t_pointf	**get_matrixes(t_rect rect, t_pointf *limits_x,
-		t_pointf *limits_y, int **m2)
+		t_pointf *limits_y, int **m2, float level)
 {
 	int			x;
 	int			y;
@@ -71,7 +71,7 @@ t_pointf	**get_matrixes(t_rect rect, t_pointf *limits_x,
 		while (y < rect.width)
 		{
 			m[x][y].x = (y - x) * cos(0.523599);
-			m[x][y].y = (x + y) * sin(0.523599) - m2[x][y] / 2;
+			m[x][y].y = (x + y) * sin(0.523599) - m2[x][y] / level;
 			get_limits(limits_x, limits_y, m[x][y]);
 			y++;
 		}
@@ -80,7 +80,7 @@ t_pointf	**get_matrixes(t_rect rect, t_pointf *limits_x,
 	return (m);
 }
 
-t_point	**ft_iso(t_rect rect, int **matrix)
+t_point	**ft_iso(t_rect rect, int **matrix, float level)
 {
 	t_point		**matrix_iso;
 	t_pointf	**m;
@@ -91,7 +91,7 @@ t_point	**ft_iso(t_rect rect, int **matrix)
 	limits_y.x = FLT_MAX;
 	limits_x.y = FLT_MIN;
 	limits_y.y = FLT_MIN;
-	m = get_matrixes(rect, &limits_x, &limits_y, matrix);
+	m = get_matrixes(rect, &limits_x, &limits_y, matrix, level);
 	if (!m)
 		return (0);
 	rect.escale = ft_adjust_coord(m, limits_x, limits_y, rect);

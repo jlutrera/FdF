@@ -26,5 +26,5 @@ void	put_menu(t_vars vars)
 	mlx_string_put(vars.mlx, vars.win, 40, 140, P_WHITE, "  -   : ZOOM  out");
 	mlx_string_put(vars.mlx, vars.win, 40, 160,
 		P_WHITE, "  A   : ROTATE right");
-	mlx_string_put(vars.mlx, vars.win, 40, 180, P_WHITE, "  S   : ROTATE left");
+	mlx_string_put(vars.mlx, vars.win, 40, 180, P_WHITE, "  D   : ROTATE left");
 }

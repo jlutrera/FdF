@@ -16,8 +16,8 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-		dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
-		*(unsigned int *)dst = color;
+	dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
 double	distance(t_point a, t_point b)
@@ -40,7 +40,7 @@ int	color_at_point(t_point a, t_point b, t_point p)
 	return ((red << 16) | (green << 8) | blue);
 }		
 
-void	bresenham(t_vars vars, t_point p, t_point q)
+void	bresenham(t_vars *vars, t_point p, t_point q)
 {
 	t_point	d;
 	t_point	s;
@@ -56,7 +56,7 @@ void	bresenham(t_vars vars, t_point p, t_point q)
 	p_ini = p;
 	while (1)
 	{
-		my_mlx_pixel_put(&(vars.data), p.x, p.y, color_at_point(p_ini, q, p));
+		my_mlx_pixel_put(&(*vars).data, p.x, p.y, color_at_point(p_ini, q, p));
 		if (p.x == q.x && p.y == q.y)
 			break ;
 		e2 = err * 2;
@@ -67,22 +67,23 @@ void	bresenham(t_vars vars, t_point p, t_point q)
 	}
 }
 
-void	draw_lines(t_vars vars, t_point **matrix, int h, int w)
+void	draw_lines(t_vars *vars)
 {
 	int	y;
 	int	x;
 
 	x = -1;
-	while (++x < h)
+	while (++x < (*vars).rect.height)
 	{
 		y = -1;
-		while (++y < w - 1)
+		while (++y < (*vars).rect.width - 1)
 		{
-			bresenham(vars, matrix[x][y], matrix[x][y + 1]);
-			if (x < h - 1)
-				bresenham(vars, matrix[x][y], matrix[x + 1][y]);
+			bresenham(vars, (*vars).rect.iso[x][y], (*vars).rect.iso[x][y + 1]);
+			if (x < (*vars).rect.height - 1)
+				bresenham(vars, (*vars).rect.iso[x][y],
+					(*vars).rect.iso[x + 1][y]);
 		}
-		if (x < h - 1)
-			bresenham(vars, matrix[x][y], matrix[x + 1][y]);
+		if (x < (*vars).rect.height - 1)
+			bresenham(vars, (*vars).rect.iso[x][y], (*vars).rect.iso[x + 1][y]);
 	}
 }

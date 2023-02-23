@@ -78,13 +78,13 @@ int	main(int argc, char **argv)
 	matrix = load_map(argv[1], &rect);
 	if (!matrix)
 		return (0);
-	matrix_iso = ft_iso(rect, matrix);
+	matrix_iso = ft_iso(rect, matrix, 3);
 	if (!matrix_iso)
 	{
 		ft_freematrix((void **)matrix, rect.height);
 		return (0);
 	}
-	process_img(argv[1], rect.height, rect.width, matrix_iso);
+	process_img(argv[1], rect, matrix_iso, matrix);
 	ft_freematrix((void **)matrix, rect.height);
 	ft_freematrix((void **)matrix_iso, rect.height);
 	return (0);

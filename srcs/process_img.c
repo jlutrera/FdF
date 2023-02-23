@@ -12,15 +12,7 @@
 
 #include "../include/fdf.h"
 
-void	put_image(t_vars *vars, t_point **matrix, int h, int w)
-{
-	(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X, MAX_Y);
-	(*vars).data.addr = mlx_get_data_addr((*vars).data.img, &(*vars).data.bpp,
-			&(*vars).data.line_len, &(*vars).data.endian);
-	draw_lines(*vars, matrix, h, w);
-}
-
-void	process_img(char *name, int height, int width, t_point **matrix)
+void	process_img(char *name, t_rect r, t_point **matrix, int **m)
 {
 	t_vars	vars;
 	char	*s;
@@ -29,8 +21,21 @@ void	process_img(char *name, int height, int width, t_point **matrix)
 	s = ft_strjoin("FdF  ###  ", name);
 	vars.win = mlx_new_window(vars.mlx, MAX_X, MAX_Y, s);
 	free(s);
-	put_image(&vars, matrix, height, width);
+	vars.mouse.x = 0;
+	vars.mouse.y = 0;
+	vars.mouse.is_pressed = 0;
+	vars.rect.height = r.height;
+	vars.rect.width = r.width;
+	vars.rect.map = m;
+	vars.rect.level_z = 3;
+	vars.data.img = mlx_new_image(vars.mlx, MAX_X, MAX_Y);
+	vars.data.addr = mlx_get_data_addr(vars.data.img, &vars.data.bpp, \
+			&vars.data.line_len, &vars.data.endian);
+	vars.rect.iso = matrix;
+	vars.rect.map = m;
+	draw_lines(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.data.img, 0, 0);
 	put_menu(vars);
-	my_hooks(vars);
+	my_hooks(&vars);
+	mlx_loop(vars.mlx);
 }
