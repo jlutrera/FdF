@@ -16,21 +16,21 @@ int	k_event(int keycode, t_vars *vars)
 {
 	if (keycode == K_ESC)
 		ft_close(vars);
-	if (keycode == K_RIGHT)
+	else if (keycode == K_RIGHT)
 		ft_translate(10, 0, vars);
-	if (keycode == K_LEFT)
+	else if (keycode == K_LEFT)
 		ft_translate(-10, 0, vars);
-	if (keycode == K_DOWN)
+	else if (keycode == K_DOWN)
 		ft_translate(0, 10, vars);
-	if (keycode == K_UP)
+	else if (keycode == K_UP)
 		ft_translate(0, -10, vars);
-	if (keycode == K_ADD)
+	else if (keycode == K_ADD)
 		ft_zoom(1.5, vars);
-	if (keycode == K_MINUS)
+	else if (keycode == K_MINUS)
 		ft_zoom(0.5, vars);
-	if (keycode == K_A)
+	else if (keycode == K_A)
 		ft_changez(-0.2, vars);
-	if (keycode == K_D)
+	else if (keycode == K_D)
 		ft_changez(0.2, vars);
 	return (0);
 }
@@ -41,9 +41,9 @@ int	mouse_press(int button, int x, int y, t_vars *vars)
 	(void)y;
 	if (button == 1)
 		(*vars).mouse.is_pressed = 1;
-	if (button == 4)
+	else if (button == 4)
 		ft_zoom(1.5, vars);
-	if (button == 5)
+	else if (button == 5)
 		ft_zoom(0.5, vars);
 	return (0);
 }
@@ -54,10 +54,6 @@ int	mouse_release(int button, int x, int y, t_vars *vars)
 	(void)y;
 	if (button == 1)
 		(*vars).mouse.is_pressed = 0;
-	if (button == 4)
-		ft_zoom(0.5, vars);
-	if (button == 5)
-		ft_zoom(1.5, vars);
 	return (0);
 }
 

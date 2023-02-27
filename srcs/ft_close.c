@@ -1,39 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freematrix.c                                    :+:      :+:    :+:   */
+/*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 13:45:47 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/18 13:45:47 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/02/23 17:32:13 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/02/23 17:32:13 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-void	ft_freematrix(void **m, int n)
+int	ft_close(t_vars *vars)
 {
-	int	i;
-
-	if (m)
-	{
-		if (*m)
-		{
-			i = 0;
-			while (i < n)
-				free(m[i++]);
-		}
-		free(m);
-	}
-}
-
-void	ft_free(void **v)
-{
-	int	i;
-
-	i = 0;
-	while (v[i])
-		free(v[i++]);
-	free(v);
+	mlx_destroy_image((*vars).mlx, (*vars).data.img);
+	mlx_destroy_window((*vars).mlx, (*vars).win);
+	(*vars).win = NULL;
+	exit (0);
 }

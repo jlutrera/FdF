@@ -26,8 +26,8 @@ char	*ft_strchr(const char *s, int c)
 /*
 #include <stdio.h>
 int main () {
-   char str[] = "vamosvamos que nos vamos";
-   char ch = 'b';
+   char str[] = "-100,0xff";
+   char ch = ',';
    char *ret;
 
    ret = ft_strchr(str, ch);

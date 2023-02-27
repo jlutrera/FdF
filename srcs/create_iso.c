@@ -12,22 +12,27 @@
 
 #include "../include/fdf.h"
 
-int	select_color(int t, int i)
+int	select_color(int t, t_map m)
 {
 	float	d;
+	int		i;
 
+	if (m.color != 0)
+		return (m.color);
 	d = t / 6;
-	if (i <= d)
-		return (P_WHITE);
-	else if (i <= 2.5 * d)
-		return (P_YELLOW);
+	i = m.value;
+	if (i <= 0.5 * d)
+		return (P_BLUE);
+	else if (i <= 2 * d)
+		return (P_CYAN);
+	else if (i <= 4 * d)
+		return (P_ORANGE);
 	else if (i <= 5 * d)
-		return (P_RED);
-	else
-		return (P_MAGEN);
+		return (P_GREEN);
+	return (P_WHITE);
 }
 
-t_point	**create_iso(t_pointf **m, t_rect r, int **m2)
+t_point	**create_iso(t_pointf **m, t_rect r, t_map **m2)
 {
 	int		x;
 	int		y;
@@ -48,8 +53,8 @@ t_point	**create_iso(t_pointf **m, t_rect r, int **m2)
 		y = -1;
 		while (++y < r.width)
 		{
-			iso[x][y].x = m[x][y].x * r.escale + 200;
-			iso[x][y].y = m[x][y].y * r.escale + 25;
+			iso[x][y].x = (m[x][y].x * r.escale + 25) * r.size;
+			iso[x][y].y = (m[x][y].y * r.escale + 25) * r.size;
 			iso[x][y].z = select_color(r.top, m2[x][y]);
 		}
 	}

@@ -22,21 +22,19 @@ char	*ft_strrchr(const char *s, int c)
 			return ((char *)s + i);
 	return (0);
 }
-/*
 
+/*
 #include <string.h>
 int main () {
-   char str[] = "ltripouiel";
-   char ch = 'p';
+   char str[] = "-100,0xff";
+   char ch = ',';
    char *ret;
    char *ret2;
 
    ret = ft_strrchr(str, ch);
-   ret2 = strrchr(str, ch);
    if (ret == 0)
 		ret = "(null)";
    printf("My string after |%c| is -  %s \n", ch, ret);
-   printf("Correct string after |%c| is -  %s \n", ch, ret2);
    return(0);
 }
 */

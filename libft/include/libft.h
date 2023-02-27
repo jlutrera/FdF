@@ -73,7 +73,7 @@ t_list	*ft_lstlast(t_list *lst);
 
 //get_next_line project
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
+#  define BUFFER_SIZE 1000
 # endif
 
 char	*get_next_line(int fd);

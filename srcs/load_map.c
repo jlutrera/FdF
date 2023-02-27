@@ -12,59 +12,64 @@
 
 #include "../include/fdf.h"
 
-void	remap(int **matrix, t_rect r, int f)
+void	remap(t_map **matrix, t_rect r, int f)
 {
 	int	x;
 	int	y;
 
-	x = 0;
-	while (x < r.height)
+	x = -1;
+	while (++x < r.height)
 	{
-		y = 0;
-		while (y < r.width)
-		{
-			matrix[x][y] -= f;
-			y++;
-		}
-		x++;
+		y = -1;
+		while (++y < r.width)
+			matrix[x][y].value -= f;
 	}
 }
 
-int	*load_maprows(char *line, t_rect *r, int *floor)
+void	fix_floor_and_top(int *floor, t_rect *r, int v)
 {
-	int		*m;
+	if (*floor > v)
+		*floor = v;
+	if ((*r).top < v)
+		(*r).top = v;
+}
+
+t_map	*load_maprows(char *line, t_rect *r, int *floor)
+{
+	t_map	*m;
 	int		y;
 	char	**numbers;
 
 	numbers = ft_split(line, ' ');
 	if (!numbers)
-		return (0);
-	m = (int *)ft_calloc(sizeof(int), (*r).width);
+		return (NULL);
+	m = (t_map *)ft_calloc(sizeof(t_map), (*r).width);
 	if (!m)
-		return (0);
-	y = -1;
-	while (numbers[++y])
 	{
-		m[y] = ft_atoi(numbers[y]);
-		if (*floor > m[y])
-			*floor = m[y];
-		if ((*r).top < m[y])
-			(*r).top = m[y];
-		free(numbers[y]);
+		ft_free((void **)numbers);
+		return (NULL);
 	}
-	free(numbers);
+	y = 0;
+	while (numbers[y] && y < (*r).width)
+	{
+		m[y].value = read_number(numbers[y]);
+		m[y].color = read_color(numbers[y]);
+		fix_floor_and_top(floor, r, m[y].value);
+		y++;
+	}
+	ft_free((void **)numbers);
 	return (m);
 }
 
-int	**get_matrix(int fd, int *f, t_rect *r)
+t_map	**get_matrix(int fd, int *f, t_rect *r)
 {
-	int		**m;
+	t_map	**m;
 	int		x;
 	char	*line;
 
-	m = (int **)ft_calloc(sizeof(int *), (*r).height);
+	m = (t_map **)ft_calloc(sizeof(t_map *), (*r).height);
 	if (!m)
-		return (0);
+		return (NULL);
 	x = 0;
 	line = get_next_line(fd);
 	while (line)
@@ -74,7 +79,7 @@ int	**get_matrix(int fd, int *f, t_rect *r)
 		{
 			ft_freematrix((void **)m, (*r).height);
 			free(line);
-			return (0);
+			return (NULL);
 		}
 		++x;
 		free(line);
@@ -83,20 +88,20 @@ int	**get_matrix(int fd, int *f, t_rect *r)
 	return (m);
 }
 
-int	**load_map(char *file, t_rect *r)
+t_map	**load_map(char *file, t_rect *r)
 {
-	int		**matrix;
+	t_map	**matrix;
 	int		fd;
 	int		floor;
 
 	fd = open(file, O_RDONLY);
-	if (!fd)
-		return (0);
+	if (fd == -1)
+		return (NULL);
 	floor = INT_MAX;
 	(*r).top = INT_MIN;
 	matrix = get_matrix(fd, &floor, r);
 	if (!matrix)
-		return (0);
+		return (NULL);
 	close(fd);
 	remap(matrix, *r, floor);
 	(*r).top -= floor;

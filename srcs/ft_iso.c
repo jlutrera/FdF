@@ -12,92 +12,95 @@
 
 #include "../include/fdf.h"
 
-void	get_limits(t_pointf *lx, t_pointf *ly, t_pointf value)
+void	get_limits(float (*limits)[], t_pointf value)
 {
-	if (value.x < (*lx).x)
-		(*lx).x = value.x;
-	else if (value.x > (*lx).y)
-		(*lx).y = value.x;
-	if (value.y < (*ly).x)
-		(*ly).x = value.y;
-	else if (value.y > (*ly).y)
-		(*ly).y = value.y;
+	if (value.x < (*limits)[0])
+		(*limits)[0] = value.x;
+	else if (value.x > (*limits)[1])
+		(*limits)[1] = value.x;
+	if (value.y < (*limits)[2])
+		(*limits)[2] = value.y;
+	else if (value.y > (*limits)[3])
+		(*limits)[3] = value.y;
 }
 
-int	ft_adjust_coord(t_pointf **m, t_pointf lx, t_pointf ly, t_rect r)
+float	ft_adjust_coord(t_pointf **m, float limits[], t_rect r)
 {
 	int		x;
 	int		y;
 	float	max_x;
 	float	max_y;
 
-	x = 0;
-	while (x < r.height)
+	x = -1;
+	while (++x < r.height)
 	{
-		y = 0;
-		while (y < r.width)
+		y = -1;
+		while (++y < r.width)
 		{
-			m[x][y].x -= lx.x;
-			m[x][y].y -= ly.x;
-			y++;
+			m[x][y].x -= limits[0];
+			m[x][y].y -= limits[2];
 		}
-		x++;
 	}
-	max_x = (MAX_X - 400) / (lx.y - lx.x);
-	max_y = (MAX_Y - 50) / (ly.y - ly.x);
+	max_x = (MAX_X - 50) / (limits[1] - limits[0]);
+	max_y = (MAX_Y - 50) / (limits[3] - limits[2]);
 	if (max_x > max_y)
 		return (max_y);
 	return (max_x);
 }
 
-t_pointf	**get_matrixes(t_rect rect, t_pointf *limits_x,
-		t_pointf *limits_y, int **m2, float level)
+float	upper(int t, float l, int v)
+{
+	if (t == 0)
+		return (0);
+	return (l * v / (0.5 * t));
+}
+
+t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
+		t_map **m2, float level)
 {
 	int			x;
 	int			y;
 	t_pointf	**m;
 
 	m = (t_pointf **)malloc(rect.height * sizeof(t_pointf *));
-	x = 0;
-	while (x < rect.height)
+	x = -1;
+	while (++x < rect.height)
 	{
 		m[x] = (t_pointf *)malloc(rect.width * sizeof(t_pointf));
 		if (!m[x])
 		{
 			ft_freematrix((void **)m, rect.height);
-			return (0);
+			return (NULL);
 		}
-		y = 0;
-		while (y < rect.width)
+		y = -1;
+		while (++y < rect.width)
 		{
 			m[x][y].x = (y - x) * cos(0.523599);
-			m[x][y].y = (x + y) * sin(0.523599) - m2[x][y] / level;
-			get_limits(limits_x, limits_y, m[x][y]);
-			y++;
+			m[x][y].y = (x + y) * sin(0.523599) - \
+				upper(rect.top, level, m2[x][y].value);
+			get_limits(limits, m[x][y]);
 		}
-		x++;
 	}
 	return (m);
 }
 
-t_point	**ft_iso(t_rect rect, int **matrix, float level)
+t_point	**ft_iso(t_rect rect, t_map **matrix, float level)
 {
 	t_point		**matrix_iso;
 	t_pointf	**m;
-	t_pointf	limits_x;
-	t_pointf	limits_y;
+	float		limits[4];
 
-	limits_x.x = FLT_MAX;
-	limits_y.x = FLT_MAX;
-	limits_x.y = FLT_MIN;
-	limits_y.y = FLT_MIN;
-	m = get_matrixes(rect, &limits_x, &limits_y, matrix, level);
+	limits[0] = FLT_MAX;
+	limits[2] = FLT_MAX;
+	limits[1] = FLT_MIN;
+	limits[3] = FLT_MIN;
+	m = get_matrixes(rect, &limits, matrix, level);
 	if (!m)
-		return (0);
-	rect.escale = ft_adjust_coord(m, limits_x, limits_y, rect);
+		return (NULL);
+	rect.escale = ft_adjust_coord(m, limits, rect);
 	matrix_iso = create_iso(m, rect, matrix);
 	if (!matrix_iso)
-		return (0);
+		return (NULL);
 	ft_freematrix((void **)m, rect.height);
 	return (matrix_iso);
 }

@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 23:17:58 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/14 19:18:42 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/02/25 01:31:17 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,5 @@ char	*get_next_line(int fd)
 	if (buff == 0 || i == -1)
 		free(buff);
 	free(str);
-	if (line && line[ft_strlen(line) - 1] == '\n')
-		line[ft_strlen(line) - 1] = 0;
 	return (line);
 }
