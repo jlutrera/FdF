@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_hooks.c                                        :+:      :+:    :+:   */
+/*   ft_translate_bonu.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 09:52:42 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/09 09:52:42 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/02/23 17:31:20 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/02/23 17:31:20 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../include/fdf_bonus.h"
 
-int	k_event(int keycode, t_vars *vars)
+void	ft_translate(int x, int y, t_vars *vars)
 {
-	if (keycode == K_ESC)
-		ft_close(vars);
-	return (0);
-}
+	static int	pos_x = 0;
+	static int	pos_y = 0;
 
-void	my_hooks(t_vars *vars)
-{
-	mlx_hook((*vars).win, 17, 1L << 17, &ft_close, vars);
-	mlx_hook((*vars).win, 2, 1L << 0, &k_event, vars);
+	pos_x += x;
+	pos_y += y;
+	mlx_clear_window((*vars).mlx, (*vars).win);
+	mlx_put_image_to_window((*vars).mlx, (*vars).win,
+		(*vars).data.img, pos_x, pos_y);
+	put_menu(*vars);
 }

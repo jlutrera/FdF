@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_translate.c                                     :+:      :+:    :+:   */
+/*   fdf_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 17:31:20 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/23 17:31:20 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/02/27 22:47:04 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/02/27 22:47:04 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#ifndef FDF_BONUS_H
+# define FDF_BONUS_H
 
-void	ft_translate(int x, int y, t_vars *vars)
-{
-	static int	pos_x = 0;
-	static int	pos_y = 0;
+# include "../include/fdf.h"
 
-	pos_x += x;
-	pos_y += y;
-	mlx_clear_window((*vars).mlx, (*vars).win);
-	mlx_put_image_to_window((*vars).mlx, (*vars).win,
-		(*vars).data.img, pos_x, pos_y);
-	put_menu(*vars);
-}
+void		put_menu(t_vars vars);
+void		ft_zoom(float e, t_vars *vars);
+void		ft_changez(float i, t_vars *vars);
+void		ft_translate(int x, int y, t_vars *vars);
+#endif

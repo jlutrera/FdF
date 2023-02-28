@@ -20,6 +20,7 @@
 # include <limits.h>
 # include <float.h>
 
+// COLORS
 # define P_RED   0xFF0000
 # define P_GREEN 0x00FF00
 # define P_BLUE  0x0000FF
@@ -30,7 +31,7 @@
 # define P_CYAN 0x4BB5FF
 # define P_GRAY	0x333333
 
-//Para Windows
+//KEYCODE para Windows
 # define K_ESC   0xFF1B
 # define K_UP    0xFF52
 # define K_DOWN  0xFF54
@@ -41,9 +42,11 @@
 # define K_A 97
 # define K_D 100
 
+//Window Size for the image
 # define MAX_X   1920
 # define MAX_Y   1000
 
+//STRUCTS
 typedef struct s_map
 {
 	int	value;
@@ -102,6 +105,8 @@ typedef struct s_vars
 	t_mouse	mouse;
 }	t_vars;
 
+//PROTOTYPES
+//...for Mandatory
 t_point		**ft_iso(t_rect rect, t_map **matrix, float level);
 void		my_hooks(t_vars *vars);
 void		process_img(char *name, t_rect r, t_point **matrix, t_map **m);
@@ -120,10 +125,4 @@ int			read_color(char *s);
 int			ft_hextoi(char *s);
 int			ft_errormsg(int e);
 int			ft_error(float e, t_vars vars);
-//Bonus part
-void		put_menu(t_vars vars);
-void		ft_zoom(float e, t_vars *vars);
-void		ft_changez(float i, t_vars *vars);
-void		ft_translate(int x, int y, t_vars *vars);
-//void		ft_rotation(int axis, float angle, t_vars *vars);
 #endif

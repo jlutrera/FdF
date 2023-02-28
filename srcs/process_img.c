@@ -41,7 +41,6 @@ void	process_img(char *name, t_rect r, t_point **matrix, t_map **m)
 	ft_init(&vars, r, matrix, m);
 	draw_lines(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.data.img, 0, 0);
-	put_menu(vars);
 	my_hooks(&vars);
 	mlx_loop(vars.mlx);
 }

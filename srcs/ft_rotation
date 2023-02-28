@@ -1,0 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_rotation.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/25 08:57:41 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/02/25 08:57:41 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/fdf.h"
+
+t_map	**m_x(float a, t_vars *vars)
+{
+	int		x;
+	int		y;
+	int		z;
+	t_map	**aux;
+
+	x = -1;
+	while (++x < (*vars).rect.height )
+	{
+		y = -1;
+		while (++y < (*vars).rect.width)
+		{
+			aux[x][y].color = (*vars).rect.map[x][y].color;
+			aux[x][y].value = (*vars).rect.map[x][y].value;
+
+		}
+	}
+}
+
+t_map	**use_rotation(int axis, float angle, t_vars *vars)
+{
+	t_map	**aux;
+
+	if (axis == 1)
+		aux = m_x(angle, vars);
+	else if (axis == 2)
+		aux = m_y(angle, vars);
+	else
+		aux = m_z(angle, vars);
+}
+
+void	ft_rotation(int axis, float angle, t_vars *vars)
+{
+	mlx_destroy_image((*vars).mlx, (*vars).data.img);
+	(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X, MAX_Y);
+	(*vars).data.addr = mlx_get_data_addr((*vars).data.img, \
+			&(*vars).data.bpp, &(*vars).data.line_len, \
+			&(*vars).data.endian);
+	ft_freematrix((void **)(*vars).rect.iso, (*vars).rect.height);
+	(*vars).rect.map = use_rotation(axis, angle, vars);
+	(*vars).rect.iso = ft_iso((*vars).rect, (*vars).rect.map, \
+			(*vars).rect.level_z);
+	draw_lines(vars);
+	mlx_clear_window((*vars).mlx, (*vars).win);
+	ft_translate(0, 0, vars);
+	put_menu(*vars);
+}
