@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_translate_bonu.c                                :+:      :+:    :+:   */
+/*   ft_freematrix_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 17:31:20 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/23 17:31:20 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/02/18 13:45:47 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/03/02 19:13:34 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-void	ft_translate(int x, int y, t_vars *vars)
+void	ft_freematrix(void **m, int n)
 {
-	static int	pos_x = 0;
-	static int	pos_y = 0;
+	int	i;
 
-	pos_x += x;
-	pos_y += y;
-	mlx_put_image_to_window((*vars).mlx, (*vars).win,
-		(*vars).data.img, pos_x, pos_y);
-	mlx_put_image_to_window((*vars).mlx, (*vars).win, \
-		(*vars).menu.img, 1520, 0);
+	if (m)
+	{
+		if (*m)
+		{
+			i = 0;
+			while (i < n)
+				free(m[i++]);
+		}
+		free(m);
+	}
+}
+
+void	ft_free(void **v)
+{
+	int	i;
+
+	i = 0;
+	while (v[i])
+		free(v[i++]);
+	free(v);
 }

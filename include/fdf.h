@@ -14,11 +14,14 @@
 # define FDF_H
 
 # include "../libft/include/libft.h"
-# include "../mlx_linux/mlx.h"
-# include <X11/Xlib.h>
 # include <math.h>
 # include <limits.h>
 # include <float.h>
+//Windows
+# include "../mlx_linux/mlx.h"
+# include <X11/Xlib.h>
+//Mac
+//# include <mlx.h>
 
 // COLORS
 # define P_RED   0xFF0000
@@ -37,10 +40,21 @@
 # define K_DOWN  0xFF54
 # define K_LEFT  0xFF51
 # define K_RIGHT 0xFF53
-# define K_ADD 43
-# define K_MINUS 45
+# define K_W 119
+# define K_S 115
 # define K_A 97
 # define K_D 100
+
+//KeyCodes for Mac
+//# define K_ESC   53
+//# define K_UP    126
+//# define K_DOWN  125
+//# define K_LEFT  123
+//# define K_RIGHT 124
+//# define K_W 13
+//# define K_S 1
+//# define K_A 0
+//# define K_D 2
 
 //Window Size for the image
 # define MAX_X   1920

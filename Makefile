@@ -1,13 +1,26 @@
 # Paths
 L_DIR		=	./libft/
 S_DIR		=	./srcs/
-I_DIR		=	./include/fdf.h
-I_DIR_BONUS	=	./include/fdf_bonus.h
 O_DIR		=	./obj/
+I_DIR		=	./include/
 
 #Files
 LIB_A		=	libft.a
-SRCS		=	./srcs/create_iso.c \
+SRCS_B		=	./srcs/create_iso_bonus.c \
+				./srcs/draw_lines_bonus.c \
+				./srcs/ft_close_bonus.c \
+				./srcs/ft_freematrix_bonus.c \
+				./srcs/ft_iso_bonus.c \
+				./srcs/ft_utils_bonus.c \
+				./srcs/load_map_bonus.c \
+				./srcs/main_bonus.c \
+				./srcs/process_img_bonus.c \
+				./srcs/ft_changez_bonus.c \
+				./srcs/ft_translate_bonus.c \
+				./srcs/ft_zoom_bonus.c \
+				./srcs/my_hooks_bonus.c
+
+SRCS_M		=	./srcs/create_iso.c \
 				./srcs/draw_lines.c \
 				./srcs/ft_close.c \
 				./srcs/ft_freematrix.c \
@@ -17,37 +30,29 @@ SRCS		=	./srcs/create_iso.c \
 				./srcs/main.c \
 				./srcs/my_hooks.c \
 				./srcs/process_img.c
-SRCS_BONUS	=	./srcs/create_iso.c \
-				./srcs/draw_lines.c \
-				./srcs/ft_close.c \
-				./srcs/ft_freematrix.c \
-				./srcs/ft_iso.c \
-				./srcs/ft_utils.c \
-				./srcs/load_map.c \
-				./srcs/main.c \
-				./srcs/process_img.c \
-				./srcs/ft_changez_bonus.c \
-				./srcs/ft_translate_bonus.c \
-				./srcs/ft_zoom_bonus.c \
-				./srcs/my_hooks_bonus.c \
-				./srcs/put_menu_bonus.c
-
 # Sources and objects
-OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
-OBJS_BONUS	=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS_BONUS:.c=.o))
+RM 			=	rm -rf
+OBJS_M		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS_M:.c=.o))
+OBJS_B		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS_B:.c=.o))
+
+ifdef BONUS
+HEADER		=	$(I_DIR)fdf_bonus.h
+OBJS		=	$(OBJS_B)
+else
+HEADER		=	$(I_DIR)fdf.h
+OBJS		=	$(OBJS_M)
+endif
 
 # Constant strings
 NAME		=	fdf
 
 #Para Windows
 MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd
-INCL		=	-Imlx_linux -I$(I_DIR)
-INCL_BONUS	=	-Imlx_linux -I$(I_DIR_BONUS)
+INCL		=	-Imlx_linux -I$(HEADER)
 
 #Para Mac
 #MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
-#INCL		=	-I$(I_DIR)
-#INCL_BONUS	=	-I$(I_DIR_BONUS)
+#INCL		=	-I$(HEADER)
 
 LIBFLAGS	=	-Llibft -lft
 
@@ -65,7 +70,8 @@ RESET		=	\033[0m
 # Rules
 all			:	$(NAME)
 
-bonus		:	$(NAME) ex_comp
+bonus		:
+				@$(MAKE) BONUS=1 --no-print-directory
 
 $(O_DIR)	:
 				@echo "Creating program $(YELLOW)$(NAME)$(RESET)"
@@ -76,7 +82,7 @@ $(O_DIR)%.o	:	$(S_DIR)%.c
 				@$(CC) $(W_FLAGS) -c $< -o $@
 				@echo "... $(GREEN)OK$(RESET)" 
 
-$(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
+$(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)           
 				@echo "$(YELLOW)Linking object files ! $(RESET)\c"
 				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAGS) $(INCL) -o $(NAME)
 				@echo "$(GREEN)SUCCESS !$(RESET)"
@@ -85,22 +91,17 @@ $(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
 $(LIB_N)	:		
 				@echo "Creating library $(YELLOW) $(LIB_A) $(RESET)"
 				@$(MAKE) --no-print-directory -C $(L_DIR)
-	
-ex_comp		:	$(OBJS_BONUS)
-				@echo "$(YELLOW)Linking bonus object files ! $(RESET)\c"
-				@$(CC) $(OBJS_BONUS) $(LEAKS) $(LIBFLAGS) $(MLXFLAGS) $(INCL_BONUS) -o $(NAME)
-				@echo "$(GREEN)SUCCESS !$(RESET)"
-				@echo "$(NAME) created successfully !"
+
 clean		:	
 				@$(MAKE) --no-print-directory clean -C $(L_DIR) 
-				@rm -rf $(O_DIR)
+				@$(RM) $(O_DIR)
 				@echo "$(CYAN)Deleted all the object files$(RESET)"
 
 fclean		:	clean
 				@$(MAKE) --no-print-directory fclean -C $(L_DIR)
-				@rm -rf $(NAME)
+				@$(RM) $(NAME)
 				@echo "$(CYAN)Deleted all the exec files$(RESET)"
 
 re			:	fclean all
 
-.PHONY		:	all clean fclean re bonus extra
+.PHONY		:	all clean fclean re bonus

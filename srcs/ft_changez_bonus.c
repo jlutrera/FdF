@@ -23,7 +23,5 @@ void	ft_changez(float i, t_vars *vars)
 	(*vars).rect.iso = ft_iso((*vars).rect, (*vars).rect.map, \
 			(*vars).rect.level_z);
 	draw_lines(vars);
-	mlx_clear_window((*vars).mlx, (*vars).win);
 	ft_translate(0, 0, vars);
-	put_menu(*vars);
 }

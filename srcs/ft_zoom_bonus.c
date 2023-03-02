@@ -27,7 +27,7 @@ int	ft_error(float e, t_vars vars)
 		{
 			er += (vars.rect.iso[x][y].y * e > MAX_Y)
 				+ (vars.rect.iso[x][y].y * e < 0);
-			er += (vars.rect.iso[x][y].x * e > MAX_X)
+			er += (vars.rect.iso[x][y].x * e > (MAX_X - 400))
 				+ (vars.rect.iso[x][y].x * e < 0);
 		}
 	}
@@ -59,7 +59,7 @@ void	ft_zoom(float e, t_vars *vars)
 	if (!ft_error(e, *vars))
 	{
 		mlx_destroy_image((*vars).mlx, (*vars).data.img);
-		(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X, MAX_Y);
+		(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X - 400, MAX_Y);
 		(*vars).data.addr = mlx_get_data_addr((*vars).data.img, \
 				&(*vars).data.bpp, &(*vars).data.line_len, \
 				&(*vars).data.endian);
@@ -68,8 +68,6 @@ void	ft_zoom(float e, t_vars *vars)
 		(*vars).rect.iso = ft_iso((*vars).rect, (*vars).rect.map, \
 				(*vars).rect.level_z);
 		draw_lines(vars);
-		mlx_clear_window((*vars).mlx, (*vars).win);
 		ft_translate((*vars).rect.size / e, (*vars).rect.size / e, vars);
-		put_menu(*vars);
 	}
 }

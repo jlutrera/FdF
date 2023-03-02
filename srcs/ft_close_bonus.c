@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_translate_bonu.c                                :+:      :+:    :+:   */
+/*   ft_close_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 17:31:20 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/23 17:31:20 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/02/23 17:32:13 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/03/02 19:18:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-void	ft_translate(int x, int y, t_vars *vars)
+int	ft_close(t_vars *vars)
 {
-	static int	pos_x = 0;
-	static int	pos_y = 0;
-
-	pos_x += x;
-	pos_y += y;
-	mlx_put_image_to_window((*vars).mlx, (*vars).win,
-		(*vars).data.img, pos_x, pos_y);
-	mlx_put_image_to_window((*vars).mlx, (*vars).win, \
-		(*vars).menu.img, 1520, 0);
+	mlx_destroy_image((*vars).mlx, (*vars).data.img);
+	mlx_destroy_image((*vars).mlx, (*vars).menu.img);
+	mlx_destroy_window((*vars).mlx, (*vars).win);
+	(*vars).win = NULL;
+	exit (0);
 }
