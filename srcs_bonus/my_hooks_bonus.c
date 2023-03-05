@@ -12,7 +12,7 @@
 
 #include "../include/fdf_bonus.h"
 
-int	k_event(int keycode, t_vars *vars)
+static int	k_event(int keycode, t_vars *vars)
 {
 	if (keycode == K_ESC)
 		ft_close(vars);
@@ -29,13 +29,13 @@ int	k_event(int keycode, t_vars *vars)
 	else if (keycode == K_D)
 		ft_zoom(0.98, vars);
 	else if (keycode == K_S)
-		ft_changez(-0.2, vars);
+		ft_changez(-0.05, vars);
 	else if (keycode == K_W)
-		ft_changez(0.2, vars);
+		ft_changez(0.05, vars);
 	return (0);
 }
 
-int	mouse_press(int button, int x, int y, t_vars *vars)
+static int	mouse_press(int button, int x, int y, t_vars *vars)
 {
 	(void)x;
 	(void)y;
@@ -50,7 +50,7 @@ int	mouse_press(int button, int x, int y, t_vars *vars)
 	return (0);
 }
 
-int	mouse_release(int button, int x, int y, t_vars *vars)
+static int	mouse_release(int button, int x, int y, t_vars *vars)
 {
 	(void)x;
 	(void)y;
@@ -61,7 +61,7 @@ int	mouse_release(int button, int x, int y, t_vars *vars)
 	return (0);
 }
 
-int	mouse_move(int x, int y, t_vars *vars)
+static int	mouse_move(int x, int y, t_vars *vars)
 {
 	int	delta_x;
 	int	delta_y;
@@ -70,18 +70,16 @@ int	mouse_move(int x, int y, t_vars *vars)
 	(*vars).mouse.prev_y = (*vars).mouse.y;
 	(*vars).mouse.x = x;
 	(*vars).mouse.y = y;
+	delta_x = (*vars).mouse.x - (*vars).mouse.prev_x;
+	delta_y = (*vars).mouse.y - (*vars).mouse.prev_y;
 	if ((*vars).mouse.is_pressedl)
-	{
-		delta_x = (*vars).mouse.x - (*vars).mouse.prev_x;
-		delta_y = (*vars).mouse.y - (*vars).mouse.prev_y;
 		ft_translate(delta_x, delta_y, vars);
-	}
 	else if ((*vars).mouse.is_pressedr)
 	{
-		if ((*vars).mouse.y > (*vars).mouse.prev_y)
-			ft_changez(-0.01, vars);
-		else if ((*vars).mouse.y < (*vars).mouse.prev_y)
-			ft_changez(0.01, vars);
+		if (delta_y > 0)
+			ft_changez(-0.02 * delta_y, vars);
+		else if (delta_y < 0)
+			ft_changez(-0.02 * delta_y, vars);
 	}
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:47:27 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/03/02 19:13:55 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:01:47 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-int	ft_hextoi(char *s)
+static int	ft_hextoi(char *s)
 {
 	int	i;
 	int	j;
@@ -32,6 +32,38 @@ int	ft_hextoi(char *s)
 		i++ ;
 	}
 	return (j);
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	ft_free(void **v, int n)
+{
+	int	i;
+
+	if (v)
+	{
+		if (*v)
+		{
+			i = 0;
+			if (n == 0)
+			{	
+				while (v[i])
+					free(v[i++]);
+			}
+			else
+			{
+				while (i < n)
+					free(v[i++]);
+			}
+		}
+		free(v);
+	}
 }
 
 int	read_number(char *s)

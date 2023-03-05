@@ -6,13 +6,13 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:53:03 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/03/02 19:14:05 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:11:26 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-void	remap(t_map **matrix, t_rect r, int f)
+static void	remap(t_map **matrix, t_rect r, int f)
 {
 	int	x;
 	int	y;
@@ -26,7 +26,7 @@ void	remap(t_map **matrix, t_rect r, int f)
 	}
 }
 
-void	fix_floor_and_top(int *floor, t_rect *r, int v)
+static void	fix_floor_and_top(int *floor, t_rect *r, int v)
 {
 	if (*floor > v)
 		*floor = v;
@@ -34,7 +34,7 @@ void	fix_floor_and_top(int *floor, t_rect *r, int v)
 		(*r).top = v;
 }
 
-t_map	*load_maprows(char *line, t_rect *r, int *floor)
+static t_map	*load_maprows(char *line, t_rect *r, int *floor)
 {
 	t_map	*m;
 	int		y;
@@ -46,7 +46,7 @@ t_map	*load_maprows(char *line, t_rect *r, int *floor)
 	m = (t_map *)ft_calloc(sizeof(t_map), (*r).width);
 	if (!m)
 	{
-		ft_free((void **)numbers);
+		ft_free((void **)numbers, 0);
 		return (NULL);
 	}
 	y = 0;
@@ -57,11 +57,11 @@ t_map	*load_maprows(char *line, t_rect *r, int *floor)
 		fix_floor_and_top(floor, r, m[y].value);
 		y++;
 	}
-	ft_free((void **)numbers);
+	ft_free((void **)numbers, 0);
 	return (m);
 }
 
-t_map	**get_matrix(int fd, int *f, t_rect *r)
+static t_map	**get_matrix(int fd, int *f, t_rect *r)
 {
 	t_map	**m;
 	int		x;
@@ -77,7 +77,7 @@ t_map	**get_matrix(int fd, int *f, t_rect *r)
 		m[x] = load_maprows(line, r, f);
 		if (!m[x])
 		{
-			ft_freematrix((void **)m, (*r).height);
+			ft_free((void **)m, (*r).height);
 			free(line);
 			return (NULL);
 		}

@@ -12,20 +12,12 @@
 
 #include "../include/fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-double	distance(t_point a, t_point b)
+static double	distance(t_point a, t_point b)
 {
 	return (sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)));
 }
 
-int	color_at_point(t_point a, t_point b, t_point p)
+static int	color_at_point(t_point a, t_point b, t_point p)
 {
 	double	dist;
 	int		red;
@@ -40,7 +32,7 @@ int	color_at_point(t_point a, t_point b, t_point p)
 	return ((red << 16) | (green << 8) | blue);
 }		
 
-void	bresenham(t_vars *vars, t_point p, t_point q)
+static void	bresenham(t_vars *vars, t_point p, t_point q)
 {
 	t_point	d;
 	t_point	s;

@@ -1,0 +1,137 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_rotation_bonus.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/25 08:57:41 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/02/25 08:57:41 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/fdf_bonus.h"
+
+void m_x(int angle, t_vars vars)
+{
+	int		x;
+	int		y;
+	float	pre_y;
+	float	pre_z;
+
+	x = 0;
+	while (x < h)
+	{
+		y = 0;
+		while (y < w)
+		{
+			pre_y = vars.rect.map[x][y].y;
+			pre_z = vars.rect.map[x][y].z * vars.rect.level_z / (0.5 * vars.rect.top);
+			vars.rect.map[x][y].y = pre_y * cos(angle) - pre_z * sin(angle);
+			vars.rect.map[x][y].z = pre_y * sin(angle) + pre_z * cos(angle);
+		}
+		++x;
+	}
+}
+
+void m_y(int angle, t_vars vars)
+{
+	int		x;
+	int		y;
+	float	pre_x;
+	float	pre_z;
+
+	x = 0;
+	while (x < h)
+	{
+		y = 0;
+		while (y < w)
+		{
+			pre_x = vars.rect.map[x][y].x;
+			pre_z = vars.rect.map[x][y].z * vars.rect.level_z / (0.5 * vars.rect.top) ;
+			vars.rect.map[x][y].x = pre_x * cos(angle) - pre_z * sin(angle);
+			vars.rect.map[x][y].z = pre_x * sin(angle) + pre_z * cos(angle);
+		}
+		++x;
+	}
+}
+
+void m_z(int angle, t_vars vars)
+{
+	int		x;
+	int		y;
+	float	pre_x;
+	float	pre_y;
+
+	x = 0;
+	while (x < h)
+	{
+		y = 0;
+		while (y < w)
+		{
+			pre_x = vars.rect.map[x][y].x;
+			pre_y = vars.rect.map[x][y].y;
+			vars.rect.map[x][y].x = pre_x * cos(angle) + pre_y * sin(angle);
+			vars.rect.map[x][y].y = pre_y * cos(angle) - pre_x * sin(angle);
+		}
+		++x;
+	}
+}
+
+t_point	**use_rotation(int axis, float angle, t_vars *vars)
+{
+	t_pointf	**aux;
+	int			x;
+	int			y;
+/*
+1. Creo una matriz con x,y,z (t_pointf).  Añadir z en la estructura
+2. Guardo en ella los valores de vars.rect.map
+3. Aplico matriz de rotación correspondiente
+4. Aplico matriz isométrica
+5. Dibujo
+*/
+	aux = (t_pointf **)calloc((*vars).rect.height, sizeof(t_pointf *)); 
+	if (!aux)
+		return (0);
+	x = 0;
+	while (x < (*vars).rect.height)
+	{
+		aux[x] = (t_pointf  *)calloc((*vars).rect.width, sizeof((t_pointf)));
+		if (!aux[x])
+		{
+			ft_free((void **)aux, x);
+			return (0);
+		}
+		y = 0;
+		while(y < (*vars).rect.width)
+		{
+			aux[x][y].x = x;
+			aux[x][y].y = y;
+			aux[x][y].z = (*vars).rect.map.value;
+			++y;
+		}
+		++x;
+	}
+	if (axis == 1)
+		m_x(angle, aux, *vars);
+	else if (axis == 2)
+		m_y(angle, aux);
+	else
+		m_z(angle, aux);
+		
+	return (aux);
+}
+
+void	ft_rotation(int axis, float angle, t_vars *vars)
+{
+	mlx_destroy_image((*vars).mlx, (*vars).data.img);
+	(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X - 400, MAX_Y);
+	(*vars).data.addr = mlx_get_data_addr((*vars).data.img, \
+			&(*vars).data.bpp, &(*vars).data.line_len, \
+			&(*vars).data.endian);
+	ft_free((void **)(*vars).rect.iso, (*vars).rect.height);
+	(*vars).rect.iso = use_rotation(axis, angle, vars);
+	//matriz de rotación
+	draw_lines(vars);
+	ft_translate(0, 0, vars);
+}

@@ -12,7 +12,15 @@
 
 #include "../include/fdf.h"
 
-int	k_event(int keycode, t_vars *vars)
+static int	ft_close(t_vars *vars)
+{
+	mlx_destroy_image((*vars).mlx, (*vars).data.img);
+	mlx_destroy_window((*vars).mlx, (*vars).win);
+	(*vars).win = NULL;
+	exit (0);
+}
+
+static int	k_event(int keycode, t_vars *vars)
 {
 	if (keycode == K_ESC)
 		ft_close(vars);

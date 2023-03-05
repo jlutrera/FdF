@@ -6,13 +6,13 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 09:49:22 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/03/02 19:51:35 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:22:39 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-void	ft_init(t_vars *vars, t_rect r, t_point **matrix, t_map **m)
+static void	ft_init(t_vars *vars, t_rect r, t_point **matrix, t_map **m)
 {
 	int		width;
 	int		height;
@@ -29,8 +29,8 @@ void	ft_init(t_vars *vars, t_rect r, t_point **matrix, t_map **m)
 	(*vars).rect.width = r.width;
 	(*vars).rect.level_z = 1;
 	(*vars).data.img = mlx_new_image((*vars).mlx, MAX_X - 400, MAX_Y);
-	(*vars).data.addr = mlx_get_data_addr((*vars).data.img, &(*vars).data.bpp, \
-			&(*vars).data.line_len, &(*vars).data.endian);
+	(*vars).data.addr = mlx_get_data_addr((*vars).data.img, \
+		&(*vars).data.bpp, &(*vars).data.line_len, &(*vars).data.endian);
 	(*vars).rect.iso = matrix;
 	(*vars).rect.map = m;
 	(*vars).rect.top = r.top;

@@ -12,6 +12,38 @@
 
 #include "../include/fdf.h"
 
+void	ft_free(void **v, int n)
+{
+	int	i;
+
+	if (v)
+	{
+		if (*v)
+		{
+			i = 0;
+			if (n == 0)
+			{	
+				while (v[i])
+					free(v[i++]);
+			}
+			else
+			{
+				while (i < n)
+					free(v[i++]);
+			}
+		}
+		free(v);
+	}
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
 int	ft_hextoi(char *s)
 {
 	int	i;

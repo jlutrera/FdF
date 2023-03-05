@@ -6,13 +6,13 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/03/02 19:14:12 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:12:08 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf_bonus.h"
 
-int	ft_errormsg(int e)
+static int	ft_errormsg(int e)
 {
 	if (e == 0)
 		ft_printf("Correct syntax: ./fdf (map_file)\n");
@@ -25,7 +25,7 @@ int	ft_errormsg(int e)
 	return (0);
 }
 
-int	get_w(char *line, int *width)
+static int	get_w(char *line, int *width)
 {
 	char	**numbers;
 	int		w;
@@ -40,18 +40,18 @@ int	get_w(char *line, int *width)
 		aux = read_number(numbers[w]);
 		if (aux == 0 && numbers[w][0] != '0')
 		{
-			ft_free((void **)numbers);
+			ft_free((void **)numbers, 0);
 			return (ft_errormsg(2));
 		}
 		++w;
 	}	
-	ft_free((void **)numbers);
+	ft_free((void **)numbers, 0);
 	if (*width < w)
 		*width = w;
 	return (1);
 }
 
-int	get_dimensions(char *file, t_rect *rect)
+static int	get_dimensions(char *file, t_rect *rect)
 {
 	char	*line;
 	int		fd;
@@ -96,11 +96,9 @@ int	main(int argc, char **argv)
 	matrix_iso = ft_iso(rect, matrix, 1);
 	if (!matrix_iso)
 	{
-		ft_freematrix((void **)matrix, rect.height);
+		ft_free((void **)matrix, rect.height);
 		return (0);
 	}
 	process_img(argv[1], rect, matrix_iso, matrix);
-	ft_freematrix((void **)matrix, rect.height);
-	ft_freematrix((void **)matrix_iso, rect.height);
 	return (1);
 }

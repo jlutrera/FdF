@@ -12,7 +12,7 @@
 
 #include "../include/fdf.h"
 
-void	get_limits(float (*limits)[], t_pointf value)
+static void	get_limits(float (*limits)[], t_pointf value)
 {
 	if (value.x < (*limits)[0])
 		(*limits)[0] = value.x;
@@ -24,7 +24,7 @@ void	get_limits(float (*limits)[], t_pointf value)
 		(*limits)[3] = value.y;
 }
 
-float	ft_adjust_coord(t_pointf **m, float limits[], t_rect r)
+static float	ft_adjust_coord(t_pointf **m, float limits[], t_rect r)
 {
 	int		x;
 	int		y;
@@ -48,14 +48,14 @@ float	ft_adjust_coord(t_pointf **m, float limits[], t_rect r)
 	return (max_x);
 }
 
-float	upper(int t, float l, int v)
+static float	upper(int t, float l, int v)
 {
 	if (t == 0)
 		return (0);
 	return (l * v / (0.5 * t));
 }
 
-t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
+static t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
 		t_map **m2, float level)
 {
 	int			x;
@@ -69,7 +69,7 @@ t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
 		m[x] = (t_pointf *)malloc(rect.width * sizeof(t_pointf));
 		if (!m[x])
 		{
-			ft_freematrix((void **)m, rect.height);
+			ft_free((void **)m, x);
 			return (NULL);
 		}
 		y = -1;
@@ -81,6 +81,7 @@ t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
 			get_limits(limits, m[x][y]);
 		}
 	}
+	m[x] = 0;
 	return (m);
 }
 
@@ -101,6 +102,6 @@ t_point	**ft_iso(t_rect rect, t_map **matrix, float level)
 	matrix_iso = create_iso(m, rect, matrix);
 	if (!matrix_iso)
 		return (NULL);
-	ft_freematrix((void **)m, rect.height);
+	ft_free((void **)m, rect.height);
 	return (matrix_iso);
 }

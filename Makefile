@@ -1,35 +1,32 @@
 # Paths
 L_DIR		=	./libft/
-S_DIR		=	./srcs/
 O_DIR		=	./obj/
 I_DIR		=	./include/
 
 #Files
 LIB_A		=	libft.a
-SRCS_B		=	./srcs/create_iso_bonus.c \
-				./srcs/draw_lines_bonus.c \
-				./srcs/ft_close_bonus.c \
-				./srcs/ft_freematrix_bonus.c \
-				./srcs/ft_iso_bonus.c \
-				./srcs/ft_utils_bonus.c \
-				./srcs/load_map_bonus.c \
-				./srcs/main_bonus.c \
-				./srcs/process_img_bonus.c \
-				./srcs/ft_changez_bonus.c \
-				./srcs/ft_translate_bonus.c \
-				./srcs/ft_zoom_bonus.c \
-				./srcs/my_hooks_bonus.c
+SRCS_B		=	./srcs_bonus/create_iso_bonus.c \
+				./srcs_bonus/draw_lines_bonus.c \
+				./srcs_bonus/ft_close_bonus.c \
+				./srcs_bonus/ft_iso_bonus.c \
+				./srcs_bonus/ft_utils_bonus.c \
+				./srcs_bonus/load_map_bonus.c \
+				./srcs_bonus/main_bonus.c \
+				./srcs_bonus/process_img_bonus.c \
+				./srcs_bonus/ft_changez_bonus.c \
+				./srcs_bonus/ft_translate_bonus.c \
+				./srcs_bonus/ft_zoom_bonus.c \
+				./srcs_bonus/my_hooks_bonus.c
 
 SRCS_M		=	./srcs/create_iso.c \
 				./srcs/draw_lines.c \
-				./srcs/ft_close.c \
-				./srcs/ft_freematrix.c \
 				./srcs/ft_iso.c \
 				./srcs/ft_utils.c \
 				./srcs/load_map.c \
 				./srcs/main.c \
 				./srcs/my_hooks.c \
 				./srcs/process_img.c
+
 # Sources and objects
 RM 			=	rm -rf
 OBJS_M		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS_M:.c=.o))
@@ -38,9 +35,11 @@ OBJS_B		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS_B:.c=.o))
 ifdef BONUS
 HEADER		=	$(I_DIR)fdf_bonus.h
 OBJS		=	$(OBJS_B)
+S_DIR		=	./srcs_bonus/
 else
 HEADER		=	$(I_DIR)fdf.h
 OBJS		=	$(OBJS_M)
+S_DIR		=	./srcs/
 endif
 
 # Constant strings

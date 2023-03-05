@@ -12,21 +12,7 @@
 
 #include "../include/fdf.h"
 
-void	remap(t_map **matrix, t_rect r, int f)
-{
-	int	x;
-	int	y;
-
-	x = -1;
-	while (++x < r.height)
-	{
-		y = -1;
-		while (++y < r.width)
-			matrix[x][y].value -= f;
-	}
-}
-
-void	fix_floor_and_top(int *floor, t_rect *r, int v)
+static void	fix_floor_and_top(int *floor, t_rect *r, int v)
 {
 	if (*floor > v)
 		*floor = v;
@@ -34,7 +20,7 @@ void	fix_floor_and_top(int *floor, t_rect *r, int v)
 		(*r).top = v;
 }
 
-t_map	*load_maprows(char *line, t_rect *r, int *floor)
+static t_map	*load_maprows(char *line, t_rect *r, int *floor)
 {
 	t_map	*m;
 	int		y;
@@ -46,7 +32,7 @@ t_map	*load_maprows(char *line, t_rect *r, int *floor)
 	m = (t_map *)ft_calloc(sizeof(t_map), (*r).width);
 	if (!m)
 	{
-		ft_free((void **)numbers);
+		ft_free((void **)numbers, 0);
 		return (NULL);
 	}
 	y = 0;
@@ -57,11 +43,11 @@ t_map	*load_maprows(char *line, t_rect *r, int *floor)
 		fix_floor_and_top(floor, r, m[y].value);
 		y++;
 	}
-	ft_free((void **)numbers);
+	ft_free((void **)numbers, 0);
 	return (m);
 }
 
-t_map	**get_matrix(int fd, int *f, t_rect *r)
+static t_map	**get_matrix(int fd, int *f, t_rect *r)
 {
 	t_map	**m;
 	int		x;
@@ -77,7 +63,7 @@ t_map	**get_matrix(int fd, int *f, t_rect *r)
 		m[x] = load_maprows(line, r, f);
 		if (!m[x])
 		{
-			ft_freematrix((void **)m, (*r).height);
+			ft_free((void **)m, x);
 			free(line);
 			return (NULL);
 		}
@@ -85,6 +71,7 @@ t_map	**get_matrix(int fd, int *f, t_rect *r)
 		free(line);
 		line = get_next_line(fd);
 	}
+	m[x] = NULL;
 	return (m);
 }
 
@@ -93,6 +80,8 @@ t_map	**load_map(char *file, t_rect *r)
 	t_map	**matrix;
 	int		fd;
 	int		floor;
+	int		x;
+	int		y;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -103,7 +92,13 @@ t_map	**load_map(char *file, t_rect *r)
 	if (!matrix)
 		return (NULL);
 	close(fd);
-	remap(matrix, *r, floor);
+	x = -1;
+	while (++x < (*r).height)
+	{
+		y = -1;
+		while (++y < (*r).width)
+			matrix[x][y].value -= floor;
+	}
 	(*r).top -= floor;
 	return (matrix);
 }

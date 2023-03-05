@@ -12,7 +12,7 @@
 
 #include "../include/fdf_bonus.h"
 
-int	ft_error(float e, t_vars vars)
+static int	ft_error(float e, t_vars vars)
 {
 	int	er;
 	int	x;
@@ -34,26 +34,6 @@ int	ft_error(float e, t_vars vars)
 	return (er);
 }
 
-void	homotecia(float e, t_vars *vars)
-{
-	int	x;
-	int	y;
-
-	if (!ft_error(e, *vars))
-	{
-		x = -1;
-		while (++x < (*vars).rect.height)
-		{
-			y = -1;
-			while (++y < (*vars).rect.width)
-			{	
-				(*vars).rect.iso[x][y].x *= e;
-				(*vars).rect.iso[x][y].y *= e;
-			}
-		}
-	}
-}
-
 void	ft_zoom(float e, t_vars *vars)
 {
 	if (!ft_error(e, *vars))
@@ -63,7 +43,7 @@ void	ft_zoom(float e, t_vars *vars)
 		(*vars).data.addr = mlx_get_data_addr((*vars).data.img, \
 				&(*vars).data.bpp, &(*vars).data.line_len, \
 				&(*vars).data.endian);
-		ft_freematrix((void **)(*vars).rect.iso, (*vars).rect.height);
+		ft_free((void **)(*vars).rect.iso, (*vars).rect.height);
 		(*vars).rect.size *= e;
 		(*vars).rect.iso = ft_iso((*vars).rect, (*vars).rect.map, \
 				(*vars).rect.level_z);
