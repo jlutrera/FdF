@@ -58,6 +58,5 @@ t_point	**create_iso(t_pointf **m, t_rect r, t_map **m2)
 			iso[x][y].z = select_color(r.top, m2[x][y]);
 		}
 	}
-	iso[x] = NULL;
 	return (iso);
 }

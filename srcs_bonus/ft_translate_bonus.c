@@ -19,6 +19,7 @@ void	ft_translate(int x, int y, t_vars *vars)
 
 	pos_x += x;
 	pos_y += y;
+	mlx_clear_window((*vars).mlx, (*vars).win);
 	mlx_put_image_to_window((*vars).mlx, (*vars).win,
 		(*vars).data.img, pos_x, pos_y);
 	mlx_put_image_to_window((*vars).mlx, (*vars).win, \

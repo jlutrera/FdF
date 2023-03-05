@@ -39,13 +39,13 @@ static int	mouse_press(int button, int x, int y, t_vars *vars)
 {
 	(void)x;
 	(void)y;
-	if (button == 1)
+	if (button == M_B_L)
 		(*vars).mouse.is_pressedl = 1;
-	else if (button == 3)
+	else if (button == M_B_R)
 		(*vars).mouse.is_pressedr = 1;
-	else if (button == 4)
+	else if (button == M_B_CDOWN)
 		ft_zoom(1.02, vars);
-	else if (button == 5)
+	else if (button == M_B_CUP)
 		ft_zoom(0.98, vars);
 	return (0);
 }
@@ -54,9 +54,9 @@ static int	mouse_release(int button, int x, int y, t_vars *vars)
 {
 	(void)x;
 	(void)y;
-	if (button == 1)
+	if (button == M_B_L)
 		(*vars).mouse.is_pressedl = 0;
-	else if (button == 3)
+	else if (button == M_B_R)
 		(*vars).mouse.is_pressedr = 0;
 	return (0);
 }

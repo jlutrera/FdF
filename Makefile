@@ -46,12 +46,12 @@ endif
 NAME		=	fdf
 
 #Para Windows
-MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd
-INCL		=	-Imlx_linux -I$(HEADER)
+#MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd
+#INCL		=	-Imlx_linux -I$(HEADER)
 
 #Para Mac
-#MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
-#INCL		=	-I$(HEADER)
+MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
+INCL		=	-I$(HEADER)
 
 LIBFLAGS	=	-Llibft -lft
 

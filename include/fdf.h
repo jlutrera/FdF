@@ -18,10 +18,10 @@
 # include <limits.h>
 # include <float.h>
 //Windows
-# include "../mlx_linux/mlx.h"
-# include <X11/Xlib.h>
+// # include "../mlx_linux/mlx.h"
+// # include <X11/Xlib.h>
 //Mac
-//# include <mlx.h>
+# include <mlx.h>
 
 // COLORS
 # define P_RED   	0xFF0000
@@ -32,10 +32,10 @@
 # define P_CYAN 	0x4BB5FF
 
 //KEYCODE para Windows
-# define K_ESC   	0xFF1B
+//# define K_ESC   	0xFF1B
 
 //KeyCodes for Mac
-//# define K_ESC   	53
+# define K_ESC   	53
 
 //Window Size for the image
 # define MAX_X   	1920

@@ -69,7 +69,7 @@ static t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
 		m[x] = (t_pointf *)malloc(rect.width * sizeof(t_pointf));
 		if (!m[x])
 		{
-			ft_free((void **)m, x);
+			ft_free((void **)m, x - 1);
 			return (NULL);
 		}
 		y = -1;
@@ -81,7 +81,6 @@ static t_pointf	**get_matrixes(t_rect rect, float (*limits)[], \
 			get_limits(limits, m[x][y]);
 		}
 	}
-	m[x] = 0;
 	return (m);
 }
 
